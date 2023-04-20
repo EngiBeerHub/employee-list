@@ -6,21 +6,21 @@ import { MessageService } from '../message.service';
 @Component({
   selector: 'app-members',
   templateUrl: './members.component.html',
-  styleUrls: ['./members.component.css'],
+  styleUrls: ['./members.component.css']
 })
 export class MembersComponent implements OnInit {
+
   members: Member[];
 
-  constructor(
-    private MemberService: MemberService,
-  ) {}
+  constructor(private memberService: MemberService) { }
 
   ngOnInit(): void {
     this.getMembers();
   }
 
   getMembers(): void {
-    this.MemberService.getMembers() // Observable
-      .subscribe((members) => (this.members = members));
+    this.memberService.getMembers() // Observable
+      .subscribe(members => this.members = members);
   }
+
 }

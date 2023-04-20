@@ -10,5 +10,5 @@ export const MEMBERS: Member[] = [
   { id: 17, name: '森谷 怜奈' },
   { id: 18, name: '大槻 祐大' },
   { id: 19, name: '岩野 紀之' },
-  { id: 20, name: '佐々木 小次郎' },
+  { id: 20, name: '佐々木 小次郎' }
 ];
