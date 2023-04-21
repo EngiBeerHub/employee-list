@@ -3,7 +3,7 @@ import { Member } from './member';
 import { MEMBERS } from './mock-members';
 import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable({
@@ -11,6 +11,9 @@ import { catchError, map, tap } from 'rxjs/operators';
 })
 export class MemberService {
   private membersUrl = 'api/members';
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-type': 'application/json' }),
+  };
 
   constructor(
     private http: HttpClient,
@@ -18,18 +21,25 @@ export class MemberService {
   ) {}
 
   getMembers(): Observable<Member[]> {
-    return this.http.get<Member[]>(this.membersUrl)
-    .pipe(
-      tap(members => this.log('社員データを取得しました')),
+    return this.http.get<Member[]>(this.membersUrl).pipe(
+      tap((members) => this.log('社員データを取得しました')),
       catchError(this.handleError<Member[]>('getMembers', []))
     );
   }
 
   getMember(id: number): Observable<Member> {
-    this.messageService.add(
-      `MemberService: 社員データ(id=${id})を取得しました`
+    const url = `${this.membersUrl}/${id}`;
+    return this.http.get<Member>(url).pipe(
+      tap((_) => this.log(`社員データ(id=${id})を取得しました`)),
+      catchError(this.handleError<Member>(`getMember id=${id}`))
     );
-    return of(MEMBERS.find((member) => member.id === id));
+  }
+
+  updateMember(member: Member): Observable<any> {
+    return this.http.put(this.membersUrl, member, this.httpOptions).pipe(
+      tap((_) => this.log(`社員データ(id=${member.id})を変更しました`)),
+      catchError(this.handleError<any>('updateMember'))
+    );
   }
 
   private log(message: string) {
@@ -43,6 +53,6 @@ export class MemberService {
       this.log(`${operation} 失敗: ${error.message}`);
 
       return of(result as T);
-    }
+    };
   }
 }
