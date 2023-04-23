@@ -42,6 +42,27 @@ export class MemberService {
     );
   }
 
+  addMember(member: Member): Observable<Member> {
+    return this.http
+      .post<Member>(this.membersUrl, member, this.httpOptions)
+      .pipe(
+        tap((newMember: Member) =>
+          this.log(`社員データ(id=${newMember.id})を追加しました`)
+        ),
+        catchError(this.handleError<Member>('addMember'))
+      );
+  }
+
+  deleteMember(member: Member | number): Observable<Member> {
+    const id = typeof member === 'number' ? member : member.id;
+    const url = `${this.membersUrl}/${id}`;
+
+    return this.http.delete<Member>(url, this.httpOptions).pipe(
+      tap((_) => this.log(`社員データ(id=${id})を削除しました`)),
+      catchError(this.handleError<Member>('deleteMember'))
+    );
+  }
+
   private log(message: string) {
     this.messageService.add(`MemberService: ${message}`);
   }
