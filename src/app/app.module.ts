@@ -10,6 +10,7 @@ import { MemberDetailComponent } from './member-detail/member-detail.component';
 import { MessagesComponent } from './messages/messages.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { MemberSearchComponent } from './member-search/member-search.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     MemberDetailComponent,
     MessagesComponent,
     DashboardComponent,
+    MemberSearchComponent,
   ],
   imports: [
     BrowserModule,
